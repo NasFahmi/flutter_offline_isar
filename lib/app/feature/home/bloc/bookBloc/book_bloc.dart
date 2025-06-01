@@ -35,6 +35,7 @@ class BookBloc extends Bloc<BookEvent, BookState> {
         GetListBookModel book = GetListBookModel.fromJson(response[1]);
         // logger.d(jadwalPosyandu.data[0].namaKegiatan);
         if (statusCode == 200) {
+          emit(BookSuccess(books: book));
           logger.d('succes get data book');
           logger.d(book);
 

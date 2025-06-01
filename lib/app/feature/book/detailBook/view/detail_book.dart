@@ -10,12 +10,12 @@ class DetailBook extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => DeleteBookBloc(),
-      child: BlocProvider(
-        create: (context) => DetailBookBloc(),
-        child: DetailBookView(id: id),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => DetailBookBloc()),
+        BlocProvider(create: (context) => DeleteBookBloc()),
+      ],
+      child: DetailBookView(id: id),
     );
   }
 }
@@ -29,6 +29,11 @@ class DetailBookView extends StatefulWidget {
 }
 
 class _DetailBookViewState extends State<DetailBookView> {
+  @override
+  void initState() {
+    context.read<DetailBookBloc>().add(GetDetailBookById(widget.id));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DetailBookBloc, DetailBookState>(
