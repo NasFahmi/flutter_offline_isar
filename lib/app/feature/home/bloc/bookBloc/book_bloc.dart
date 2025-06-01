@@ -45,10 +45,12 @@ class BookBloc extends Bloc<BookEvent, BookState> {
               .toList();
 
           // 💾 Simpan ke lokal (replace)
-          await BookDbService().clearData(); // clear data dibutukan di get list, buat replace old data ke new data
-          await BookDbService().saveData(localBooks);
+          await BookDbService().clearSyncedData(); // hanya hapus yang dari server
+          final unsyncedLocalBooks = await BookDbService().getUnsyncedData();
 
           // ✅ Ambil dari lokal lagi untuk pastikan konsistensi
+          await BookDbService().saveData(unsyncedLocalBooks);
+          await BookDbService().saveData(localBooks); //save hasil fecth ke db lokal
           final updatedLocal = await BookDbService().getAllData();
           emit(BookLocalSuccess(updatedLocal));
           // emit(BookSuccess(books: book));

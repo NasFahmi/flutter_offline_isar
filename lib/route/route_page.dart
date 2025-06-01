@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:offline_mode/app/feature/book/createBook/view/create_book.dart';
 import 'package:offline_mode/app/feature/book/detailBook/view/detail_book.dart';
+import 'package:offline_mode/app/feature/taskSync/view/task_sync.dart';
 import 'package:offline_mode/app/feature/home/model/get_list_book_model.dart'
     as book;
 import 'package:offline_mode/app/feature/home/view/home.dart';
@@ -59,6 +60,13 @@ class MyRoute {
         final args = settings.arguments as book.Datum;
         return MaterialPageRoute(
           builder: (context) => UpdateBook(data: args),
+          settings: settings,
+        );
+
+        //? TaskSync
+      case TASKSYNC:
+        return MaterialPageRoute(
+          builder: (context) => TaskSync(),
           settings: settings,
         );
 

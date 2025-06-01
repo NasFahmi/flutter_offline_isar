@@ -9,5 +9,5 @@ const String HOME = "/home";
 const String CREATEBOOK = '/book/create';
 const String UPDATEBOOK = '/book/update';
 const String DETAILBOOK = '/book/detail';
-
+const String TASKSYNC = '/task-sync';
 const String ERRORPAGE = "/ErrorPage";

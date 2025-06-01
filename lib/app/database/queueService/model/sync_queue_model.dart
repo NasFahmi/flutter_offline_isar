@@ -12,7 +12,7 @@ class SyncQueue  {
 
   // @Enumerated(EnumType.values,'status')
   @enumerated
-  late Status status; // pending, synced, failed
+  late Status status = Status.pending; // pending, synced, failed
   late String link; // stored link to server
   String? errorMessage;
   late DateTime createdAt;

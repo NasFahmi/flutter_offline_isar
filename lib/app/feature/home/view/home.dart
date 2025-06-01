@@ -130,6 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
               icon: Icon(Icons.plus_one),
             ),
             SizedBox(width: 16),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, TASKSYNC);
+              },
+              child: Text('Task Sync'),
+            ),
           ],
         ),
         bottomNavigationBar: Container(

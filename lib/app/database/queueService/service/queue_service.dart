@@ -58,6 +58,15 @@ class QueueService {
         });
       }
     }
+
+    // after sync, delete all success queue
+    await DatabaseService.db.writeTxn(() async {
+      await DatabaseService.db.syncQueues
+          .filter()
+          .statusEqualTo(Status.success)
+          .deleteAll();
+    });
+
   }
 
   Future<bool> postToServer(SyncQueue queue) async {
