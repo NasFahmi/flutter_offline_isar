@@ -5,5 +5,6 @@ abstract class InterfaceDbService<T> {
   Future<void> updateData(T data);
   Future<void> saveData(List<T> data);
   Future<void> clearData();
+  
 
 }

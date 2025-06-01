@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:offline_mode/app/feature/home/bloc/bookBloc/book_bloc.dart';
 import 'package:offline_mode/app/feature/home/bloc/internetBloc/internet_bloc.dart';
+import 'package:offline_mode/app/feature/home/bloc/syncBloc/sync_bloc.dart';
 import 'package:offline_mode/app/view/pul_to_refresh.dart';
 import 'package:offline_mode/app/view/widget/alert_dialog_content.dart';
 import 'package:offline_mode/route/route_name.dart';
@@ -138,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
               textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.white)),
               backgroundColor: WidgetStatePropertyAll(Colors.blue),
             ),
-            onPressed: () {},
+            onPressed: () {
+              context.read<SyncBloc>().add(SyncQueueNow());
+            },
             child: Text('SYNC', style: TextStyle(color: Colors.white)),
           ),
         ),

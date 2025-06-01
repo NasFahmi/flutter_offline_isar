@@ -27,23 +27,28 @@ const SyncQueueSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'link': PropertySchema(
+    r'errorMessage': PropertySchema(
       id: 2,
+      name: r'errorMessage',
+      type: IsarType.string,
+    ),
+    r'link': PropertySchema(
+      id: 3,
       name: r'link',
       type: IsarType.string,
     ),
     r'operation': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'operation',
       type: IsarType.string,
     ),
     r'payload': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'payload',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'status',
       type: IsarType.byte,
       enumMap: _SyncQueuestatusEnumValueMap,
@@ -69,30 +74,16 @@ int _syncQueueEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.collectionName.length * 3;
   {
-    final value = object.collectionName;
+    final value = object.errorMessage;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
-  {
-    final value = object.link;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.operation;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.payload;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
+  bytesCount += 3 + object.link.length * 3;
+  bytesCount += 3 + object.operation.length * 3;
+  bytesCount += 3 + object.payload.length * 3;
   return bytesCount;
 }
 
@@ -104,10 +95,11 @@ void _syncQueueSerialize(
 ) {
   writer.writeString(offsets[0], object.collectionName);
   writer.writeDateTime(offsets[1], object.createdAt);
-  writer.writeString(offsets[2], object.link);
-  writer.writeString(offsets[3], object.operation);
-  writer.writeString(offsets[4], object.payload);
-  writer.writeByte(offsets[5], object.status.index);
+  writer.writeString(offsets[2], object.errorMessage);
+  writer.writeString(offsets[3], object.link);
+  writer.writeString(offsets[4], object.operation);
+  writer.writeString(offsets[5], object.payload);
+  writer.writeByte(offsets[6], object.status.index);
 }
 
 SyncQueue _syncQueueDeserialize(
@@ -117,14 +109,15 @@ SyncQueue _syncQueueDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = SyncQueue();
-  object.collectionName = reader.readStringOrNull(offsets[0]);
-  object.createdAt = reader.readDateTimeOrNull(offsets[1]);
+  object.collectionName = reader.readString(offsets[0]);
+  object.createdAt = reader.readDateTime(offsets[1]);
+  object.errorMessage = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.link = reader.readStringOrNull(offsets[2]);
-  object.operation = reader.readStringOrNull(offsets[3]);
-  object.payload = reader.readStringOrNull(offsets[4]);
+  object.link = reader.readString(offsets[3]);
+  object.operation = reader.readString(offsets[4]);
+  object.payload = reader.readString(offsets[5]);
   object.status =
-      _SyncQueuestatusValueEnumMap[reader.readByteOrNull(offsets[5])] ??
+      _SyncQueuestatusValueEnumMap[reader.readByteOrNull(offsets[6])] ??
           Status.pending;
   return object;
 }
@@ -137,16 +130,18 @@ P _syncQueueDeserializeProp<P>(
 ) {
   switch (propertyId) {
     case 0:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 5:
+      return (reader.readString(offset)) as P;
+    case 6:
       return (_SyncQueuestatusValueEnumMap[reader.readByteOrNull(offset)] ??
           Status.pending) as P;
     default:
@@ -156,15 +151,13 @@ P _syncQueueDeserializeProp<P>(
 
 const _SyncQueuestatusEnumValueMap = {
   'pending': 0,
-  'synced': 1,
-  'success': 2,
-  'failed': 3,
+  'success': 1,
+  'failed': 2,
 };
 const _SyncQueuestatusValueEnumMap = {
   0: Status.pending,
-  1: Status.synced,
-  2: Status.success,
-  3: Status.failed,
+  1: Status.success,
+  2: Status.failed,
 };
 
 Id _syncQueueGetId(SyncQueue object) {
@@ -259,26 +252,8 @@ extension SyncQueueQueryWhere
 extension SyncQueueQueryFilter
     on QueryBuilder<SyncQueue, SyncQueue, QFilterCondition> {
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
-      collectionNameIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'collectionName',
-      ));
-    });
-  }
-
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
-      collectionNameIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'collectionName',
-      ));
-    });
-  }
-
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
       collectionNameEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -292,7 +267,7 @@ extension SyncQueueQueryFilter
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
       collectionNameGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -308,7 +283,7 @@ extension SyncQueueQueryFilter
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
       collectionNameLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -324,8 +299,8 @@ extension SyncQueueQueryFilter
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
       collectionNameBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -412,25 +387,8 @@ extension SyncQueueQueryFilter
     });
   }
 
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> createdAtIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'createdAt',
-      ));
-    });
-  }
-
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
-      createdAtIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'createdAt',
-      ));
-    });
-  }
-
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> createdAtEqualTo(
-      DateTime? value) {
+      DateTime value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'createdAt',
@@ -441,7 +399,7 @@ extension SyncQueueQueryFilter
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
       createdAtGreaterThan(
-    DateTime? value, {
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -454,7 +412,7 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> createdAtLessThan(
-    DateTime? value, {
+    DateTime value, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -467,8 +425,8 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> createdAtBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    DateTime lower,
+    DateTime upper, {
     bool includeLower = true,
     bool includeUpper = true,
   }) {
@@ -479,6 +437,159 @@ extension SyncQueueQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'errorMessage',
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'errorMessage',
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> errorMessageEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> errorMessageBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'errorMessage',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'errorMessage',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> errorMessageMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'errorMessage',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'errorMessage',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
+      errorMessageIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'errorMessage',
+        value: '',
       ));
     });
   }
@@ -536,24 +647,8 @@ extension SyncQueueQueryFilter
     });
   }
 
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'link',
-      ));
-    });
-  }
-
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'link',
-      ));
-    });
-  }
-
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -566,7 +661,7 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -581,7 +676,7 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -596,8 +691,8 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -682,25 +777,8 @@ extension SyncQueueQueryFilter
     });
   }
 
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> operationIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'operation',
-      ));
-    });
-  }
-
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
-      operationIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'operation',
-      ));
-    });
-  }
-
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> operationEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -714,7 +792,7 @@ extension SyncQueueQueryFilter
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition>
       operationGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -729,7 +807,7 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> operationLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -744,8 +822,8 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> operationBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -831,24 +909,8 @@ extension SyncQueueQueryFilter
     });
   }
 
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> payloadIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'payload',
-      ));
-    });
-  }
-
-  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> payloadIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'payload',
-      ));
-    });
-  }
-
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> payloadEqualTo(
-    String? value, {
+    String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -861,7 +923,7 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> payloadGreaterThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -876,7 +938,7 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> payloadLessThan(
-    String? value, {
+    String value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -891,8 +953,8 @@ extension SyncQueueQueryFilter
   }
 
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> payloadBetween(
-    String? lower,
-    String? upper, {
+    String lower,
+    String upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1063,6 +1125,18 @@ extension SyncQueueQuerySortBy on QueryBuilder<SyncQueue, SyncQueue, QSortBy> {
     });
   }
 
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> sortByErrorMessage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> sortByErrorMessageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.desc);
+    });
+  }
+
   QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> sortByLink() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'link', Sort.asc);
@@ -1135,6 +1209,18 @@ extension SyncQueueQuerySortThenBy
   QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> thenByErrorMessage() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> thenByErrorMessageDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'errorMessage', Sort.desc);
     });
   }
 
@@ -1215,6 +1301,13 @@ extension SyncQueueQueryWhereDistinct
     });
   }
 
+  QueryBuilder<SyncQueue, SyncQueue, QDistinct> distinctByErrorMessage(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'errorMessage', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<SyncQueue, SyncQueue, QDistinct> distinctByLink(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1251,31 +1344,37 @@ extension SyncQueueQueryProperty
     });
   }
 
-  QueryBuilder<SyncQueue, String?, QQueryOperations> collectionNameProperty() {
+  QueryBuilder<SyncQueue, String, QQueryOperations> collectionNameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'collectionName');
     });
   }
 
-  QueryBuilder<SyncQueue, DateTime?, QQueryOperations> createdAtProperty() {
+  QueryBuilder<SyncQueue, DateTime, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<SyncQueue, String?, QQueryOperations> linkProperty() {
+  QueryBuilder<SyncQueue, String?, QQueryOperations> errorMessageProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'errorMessage');
+    });
+  }
+
+  QueryBuilder<SyncQueue, String, QQueryOperations> linkProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'link');
     });
   }
 
-  QueryBuilder<SyncQueue, String?, QQueryOperations> operationProperty() {
+  QueryBuilder<SyncQueue, String, QQueryOperations> operationProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'operation');
     });
   }
 
-  QueryBuilder<SyncQueue, String?, QQueryOperations> payloadProperty() {
+  QueryBuilder<SyncQueue, String, QQueryOperations> payloadProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'payload');
     });

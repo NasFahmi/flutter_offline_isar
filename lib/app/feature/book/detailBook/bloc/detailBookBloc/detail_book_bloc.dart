@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:offline_mode/app/feature/book/detailBook/model/get_book_by_id_model.dart';
-import 'package:offline_mode/app/feature/home/model/get_list_book_model.dart' as get_list_book;
 
 import '../../../../../../utils/shared_preferences_utils/shared_preferences_utils.dart';
 import '../../../models/book_model.dart';

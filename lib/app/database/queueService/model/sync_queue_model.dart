@@ -6,21 +6,21 @@ class SyncQueue  {
   // id local db isar
   Id id = Isar.autoIncrement;
 
-  String? collectionName; // eg: 'Book'
-  String? operation; // CREATE, UPDATE, DELETE
-  String? payload; // JSON string
+  late String collectionName; // eg: 'Book'
+  late String operation; // CREATE, UPDATE, DELETE
+  late String payload; // JSON string
 
   // @Enumerated(EnumType.values,'status')
   @enumerated
   late Status status; // pending, synced, failed
-  String? link; // stored link to server
-  DateTime? createdAt;
+  late String link; // stored link to server
+  String? errorMessage;
+  late DateTime createdAt;
 }
 
 
 enum Status {
   pending,
-  synced,
   success,
   failed,
 }
