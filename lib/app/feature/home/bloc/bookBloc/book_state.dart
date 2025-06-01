@@ -20,7 +20,7 @@ final class BookFailed extends BookState {
 }
 
 final class BookLocalSuccess extends BookState {
-  final List<BookModel> books;
+  final List<BookLocalModel> books;
   const BookLocalSuccess(this.books);
 }
 

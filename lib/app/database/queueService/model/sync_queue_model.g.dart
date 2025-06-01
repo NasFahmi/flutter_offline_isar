@@ -27,18 +27,23 @@ const SyncQueueSchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'operation': PropertySchema(
+    r'link': PropertySchema(
       id: 2,
+      name: r'link',
+      type: IsarType.string,
+    ),
+    r'operation': PropertySchema(
+      id: 3,
       name: r'operation',
       type: IsarType.string,
     ),
     r'payload': PropertySchema(
-      id: 3,
+      id: 4,
       name: r'payload',
       type: IsarType.string,
     ),
     r'status': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'status',
       type: IsarType.byte,
       enumMap: _SyncQueuestatusEnumValueMap,
@@ -71,6 +76,12 @@ int _syncQueueEstimateSize(
     }
   }
   {
+    final value = object.link;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.operation;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -93,9 +104,10 @@ void _syncQueueSerialize(
 ) {
   writer.writeString(offsets[0], object.collectionName);
   writer.writeDateTime(offsets[1], object.createdAt);
-  writer.writeString(offsets[2], object.operation);
-  writer.writeString(offsets[3], object.payload);
-  writer.writeByte(offsets[4], object.status.index);
+  writer.writeString(offsets[2], object.link);
+  writer.writeString(offsets[3], object.operation);
+  writer.writeString(offsets[4], object.payload);
+  writer.writeByte(offsets[5], object.status.index);
 }
 
 SyncQueue _syncQueueDeserialize(
@@ -108,10 +120,11 @@ SyncQueue _syncQueueDeserialize(
   object.collectionName = reader.readStringOrNull(offsets[0]);
   object.createdAt = reader.readDateTimeOrNull(offsets[1]);
   object.id = id;
-  object.operation = reader.readStringOrNull(offsets[2]);
-  object.payload = reader.readStringOrNull(offsets[3]);
+  object.link = reader.readStringOrNull(offsets[2]);
+  object.operation = reader.readStringOrNull(offsets[3]);
+  object.payload = reader.readStringOrNull(offsets[4]);
   object.status =
-      _SyncQueuestatusValueEnumMap[reader.readByteOrNull(offsets[4])] ??
+      _SyncQueuestatusValueEnumMap[reader.readByteOrNull(offsets[5])] ??
           Status.pending;
   return object;
 }
@@ -132,6 +145,8 @@ P _syncQueueDeserializeProp<P>(
     case 3:
       return (reader.readStringOrNull(offset)) as P;
     case 4:
+      return (reader.readStringOrNull(offset)) as P;
+    case 5:
       return (_SyncQueuestatusValueEnumMap[reader.readByteOrNull(offset)] ??
           Status.pending) as P;
     default:
@@ -521,6 +536,152 @@ extension SyncQueueQueryFilter
     });
   }
 
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'link',
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'link',
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'link',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'link',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'link',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'link',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'link',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'link',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'link',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'link',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'link',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> linkIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'link',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<SyncQueue, SyncQueue, QAfterFilterCondition> operationIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -902,6 +1063,18 @@ extension SyncQueueQuerySortBy on QueryBuilder<SyncQueue, SyncQueue, QSortBy> {
     });
   }
 
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> sortByLink() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'link', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> sortByLinkDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'link', Sort.desc);
+    });
+  }
+
   QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> sortByOperation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'operation', Sort.asc);
@@ -977,6 +1150,18 @@ extension SyncQueueQuerySortThenBy
     });
   }
 
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> thenByLink() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'link', Sort.asc);
+    });
+  }
+
+  QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> thenByLinkDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'link', Sort.desc);
+    });
+  }
+
   QueryBuilder<SyncQueue, SyncQueue, QAfterSortBy> thenByOperation() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'operation', Sort.asc);
@@ -1030,6 +1215,13 @@ extension SyncQueueQueryWhereDistinct
     });
   }
 
+  QueryBuilder<SyncQueue, SyncQueue, QDistinct> distinctByLink(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'link', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<SyncQueue, SyncQueue, QDistinct> distinctByOperation(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1068,6 +1260,12 @@ extension SyncQueueQueryProperty
   QueryBuilder<SyncQueue, DateTime?, QQueryOperations> createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
+    });
+  }
+
+  QueryBuilder<SyncQueue, String?, QQueryOperations> linkProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'link');
     });
   }
 

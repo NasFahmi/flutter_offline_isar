@@ -1,12 +1,13 @@
 import 'package:isar/isar.dart';
+import 'package:offline_mode/app/feature/book/detailBook/model/get_book_by_id_model.dart' as book_by_id;
 
 import '../../home/model/get_list_book_model.dart' as book;
 part 'book_model.g.dart';
 
 @Collection()
-class BookModel {
+class BookLocalModel {
   // Default constructor
-  BookModel();
+  BookLocalModel();
 
   // id local db isar
   Id id = Isar.autoIncrement;
@@ -23,13 +24,25 @@ class BookModel {
 
   bool isSynced = false;
   // ✅ Konversi dari server model Datum
-  factory BookModel.fromServer(book.Datum data) {
-    return BookModel()
+  factory BookLocalModel.fromServerDatum(book.Datum data) {
+    return BookLocalModel()
       ..serverId = data.id
       ..title = data.title
       ..author = data.author
       ..description = data.description
       ..publishedAt = data.publishedAt
+      ..userId = data.userId
+      ..createdAt = data.createdAt
+      ..updatedAt = data.updatedAt;
+  }
+  // ✅ Konversi dari server model Data untuk get by id
+  factory BookLocalModel.fromServerData(book_by_id.Data data) {
+    return BookLocalModel()
+      ..serverId = data.id
+      ..title = data.title
+      ..author = data.author
+      ..description = data.description
+      ..publishedAt = data.publishedAt as String?
       ..userId = data.userId
       ..createdAt = data.createdAt
       ..updatedAt = data.updatedAt;

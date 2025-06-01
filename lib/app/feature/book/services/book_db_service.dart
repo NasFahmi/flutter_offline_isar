@@ -4,45 +4,45 @@ import 'package:offline_mode/app/feature/book/services/interface_db_service.dart
 
 import '../models/book_model.dart';
 
-class BookDbService implements InterfaceDbService<BookModel> {
+class BookDbService implements InterfaceDbService<BookLocalModel> {
 
   
   @override
   Future<void> clearData() async{
      await DatabaseService.db.writeTxn(() async {
-      await DatabaseService.db.bookModels.clear();
+      await DatabaseService.db.bookLocalModels.clear();
     });
   }
   
   @override
-  Future<void> createData(BookModel data)async {
+  Future<void> createData(BookLocalModel data)async {
     await DatabaseService.db.writeTxn(() async {
-      await DatabaseService.db.bookModels.put(data);
+      await DatabaseService.db.bookLocalModels.put(data);
     });
   }
   
   @override
-  Future<List<BookModel>> getAllData()async {
-    return await DatabaseService.db.bookModels.where().findAll();
+  Future<List<BookLocalModel>> getAllData()async {
+    return await DatabaseService.db.bookLocalModels.where().findAll();
   }
   
   @override
-  Future<BookModel?> getDataById(int id) async{
-    return await DatabaseService.db.bookModels.get(id);
+  Future<BookLocalModel?> getDataById(String id) async{
+    return await DatabaseService.db.bookLocalModels.getByServerId(id);
   }
   
   @override
-  Future<void> saveData(List<BookModel> data) async{
+  Future<void> saveData(List<BookLocalModel> data) async{
     await DatabaseService.db.writeTxn(() async {
-      await DatabaseService.db.bookModels.putAll(data);
+      await DatabaseService.db.bookLocalModels.putAll(data);
     });
   }
   
   @override
 
-  Future<void> updateData(BookModel data) async{
+  Future<void> updateData(BookLocalModel data) async{
     await DatabaseService.db.writeTxn(() async {
-      await DatabaseService.db.bookModels.put(data);
+      await DatabaseService.db.bookLocalModels.put(data);
     });
   }
 }

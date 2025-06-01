@@ -39,12 +39,12 @@ class BookBloc extends Bloc<BookEvent, BookState> {
           logger.d(book);
 
           // !konversi data dari server ke lokal
-          List<BookModel> localBooks = book.data
-              .map((b) => BookModel.fromServer(b)) // Buat converter-nya
+          List<BookLocalModel> localBooks = book.data
+              .map((b) => BookLocalModel.fromServerDatum(b)) // Buat converter-nya
               .toList();
 
           // 💾 Simpan ke lokal (replace)
-          await BookDbService().clearData();
+          await BookDbService().clearData(); // clear data dibutukan di get list, buat replace old data ke new data
           await BookDbService().saveData(localBooks);
 
           // ✅ Ambil dari lokal lagi untuk pastikan konsistensi

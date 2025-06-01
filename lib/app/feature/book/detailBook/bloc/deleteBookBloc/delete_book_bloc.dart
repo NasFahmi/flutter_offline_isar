@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:offline_mode/utils/shared_preferences_utils/shared_preferences_utils.dart';
 
-import '../service/book_services.dart';
+import '../../service/book_services.dart';
 
 part 'delete_book_event.dart';
 part 'delete_book_state.dart';

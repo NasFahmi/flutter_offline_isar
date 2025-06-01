@@ -57,7 +57,7 @@ class InternetBloc extends Bloc<InternetEvent, InternetState> {
       emit(InternetDisconnected(showPopup: false, fromChecked: false));
 
       // Tunggu 5 detik sebelum menampilkan popup
-      await Future.delayed(const Duration(seconds: 5));
+      await Future.delayed(const Duration(seconds: 10));
 
       if (isDisconnected) {
         // Verifikasi status masih disconnected
@@ -70,7 +70,7 @@ class InternetBloc extends Bloc<InternetEvent, InternetState> {
   }
 
   Stream<InternetConnectionStatus> checkInternetEvery5Seconds() {
-    return Stream.periodic(const Duration(seconds: 5), (_) {
+    return Stream.periodic(const Duration(seconds: 3), (_) {
       // logger.d("connection internet is ${connectionChecker.hasConnection}");
       return connectionChecker.hasConnection;
     }).asyncMap((_) async {

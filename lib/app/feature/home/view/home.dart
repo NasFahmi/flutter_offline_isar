@@ -43,115 +43,148 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final internetBloc = BlocProvider.of<InternetBloc>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Book "),
-        centerTitle: true,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16),
-          child: BlocSelector<InternetBloc, InternetState, bool>(
-            selector: (state) => state.isDisconnected,
-            builder: (context, isDisconneected) {
-              return GestureDetector(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialogContent(
-                        mainButtonMessage: 'Cek Status Internet',
-                        colorMainButton: Colors.blue,
-                        mainButton: () {
-                          internetBloc.add(CheckInternet());
-                          Navigator.pop(context);
-                        },
-                        title: "Status Internet",
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 24),
-                            Text('Status Internet Anda Adalah'),
-                            SizedBox(height: 4),
-                            Text(
-                              isDisconneected ? 'Offline' : 'Online',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: isDisconneected
-                                    ? Colors.red
-                                    : Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 24),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    color: isDisconneected ? Colors.red : Colors.green,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
+    return BlocListener<InternetBloc, InternetState>(
+      listener: (context, state) {
+        if (state is InternetDisconnected && state.showPopup) {
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) => AlertDialog(
+              title: const Text("No Internet"),
+              content: const Text("You have been offline for 10 seconds."),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text("OK"),
                 ),
-              );
-            },
+              ],
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Book "),
+          centerTitle: true,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: BlocSelector<InternetBloc, InternetState, bool>(
+              selector: (state) => state.isDisconnected,
+              builder: (context, isDisconneected) {
+                return GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialogContent(
+                          mainButtonMessage: 'Cek Status Internet',
+                          colorMainButton: Colors.blue,
+                          mainButton: () {
+                            internetBloc.add(CheckInternet());
+                            Navigator.pop(context);
+                          },
+                          title: "Status Internet",
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 24),
+                              Text('Status Internet Anda Adalah'),
+                              SizedBox(height: 4),
+                              Text(
+                                isDisconneected ? 'Offline' : 'Online',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: isDisconneected
+                                      ? Colors.red
+                                      : Colors.green,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 24),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Container(
+                    width: 20,
+                    height: 20,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: isDisconneected ? Colors.red : Colors.green,
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, CREATEBOOK);
+              },
+              icon: Icon(Icons.plus_one),
+            ),
+            GestureDetector(onTap: () {}, child: Text("Offline Mode")),
+            SizedBox(width: 16),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          padding: EdgeInsets.all(24),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              textStyle: WidgetStatePropertyAll(TextStyle(color: Colors.white)),
+              backgroundColor: WidgetStatePropertyAll(Colors.blue),
+            ),
+            onPressed: () {},
+            child: Text('SYNC', style: TextStyle(color: Colors.white)),
           ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, CREATEBOOK);
-            },
-            icon: Icon(Icons.plus_one),
-          ),
-          GestureDetector(onTap: () {},child: Text("Offline Mode"),),
-          SizedBox(width: 16),
-        ],
-      ),
-      body: BlocBuilder<BookBloc, BookState>(
-        builder: (context, state) {
-          if (state is BookLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is BookFailed) {
-            return Center(child: Text(state.message));
-          } else if (state is BookLocalSuccess) {
-            final books = state.books;
-            // final books = state.books.data!;
-            if (books.isEmpty) {
-              return Center(child: Text("Tidak ada buku."));
-            }
-            return PullToRefreshWidget(
-              onRefresh: () {
-                context.read<BookBloc>().add(GetBookEvent());
-              },
-              refreshController: refreshController,
-              child: ListView.builder(
-                itemCount: books.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        DETAILBOOK,
-                        arguments: books[index],
-                      );
-                    },
-                    subtitle: Text(books[index].author??""),
-                    title: Text(books[index].title??""),
-                    leading: CircleAvatar(child: Text((index + 1).toString())),
-                  );
+        body: BlocBuilder<BookBloc, BookState>(
+          builder: (context, state) {
+            if (state is BookLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is BookFailed) {
+              return Center(child: Text(state.message));
+            } else if (state is BookLocalSuccess) {
+              final books = state.books;
+              // final books = state.books.data!;
+              if (books.isEmpty) {
+                return Center(child: Text("Tidak ada buku."));
+              }
+              return PullToRefreshWidget(
+                onRefresh: () {
+                  context.read<BookBloc>().add(GetBookEvent());
                 },
-              ),
-            );
-          } else {
-            return Container();
-          }
-        },
+                refreshController: refreshController,
+                child: ListView.builder(
+                  itemCount: books.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          DETAILBOOK,
+                          arguments: books[index].serverId,
+                        );
+                      },
+                      subtitle: Text(books[index].author ?? ""),
+                      title: Text(books[index].title ?? ""),
+                      leading: CircleAvatar(
+                        child: Text((index + 1).toString()),
+                      ),
+                    );
+                  },
+                ),
+              );
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

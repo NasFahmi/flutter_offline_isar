@@ -41,9 +41,9 @@ class MyRoute {
 
       //? Detail Book
       case DETAILBOOK:
-        final args = settings.arguments as book.Datum;
+        final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) => DetailBook(data: args),
+          builder: (context) => DetailBook(id: args),
           settings: settings,
         );
 

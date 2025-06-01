@@ -14,4 +14,15 @@ class BookServices {
       return response;
     });
   }
+  Future<List<dynamic>> getBookById(String token,String id) async {
+    final String link = ApiUtils().urlGetBookById(id);
+    final Map<String, dynamic> parameterQuery = {};
+
+    return await NetworkUtils(token: token).get(link, parameterQuery).then((
+      response,
+    ) {
+      logger.d(response.toString());
+      return response;
+    });
+  }
 }

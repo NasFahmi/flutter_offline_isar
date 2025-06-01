@@ -41,6 +41,10 @@ class ApiUtils {
     String urlBook = LinkApi.BOOKURL;
     return _baseUrl + _apiVersion + urlBook;
   }
+  String urlGetBookById(String id) {
+    String urlBook = LinkApi.BOOKURL;
+    return '$_baseUrl$_apiVersion$urlBook/$id';
+  }
 
   String urlCreateBook() {
     String urlBook = LinkApi.BOOKURL;

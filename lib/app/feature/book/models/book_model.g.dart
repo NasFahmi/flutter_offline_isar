@@ -9,13 +9,13 @@ part of 'book_model.dart';
 // coverage:ignore-file
 // ignore_for_file: duplicate_ignore, non_constant_identifier_names, constant_identifier_names, invalid_use_of_protected_member, unnecessary_cast, prefer_const_constructors, lines_longer_than_80_chars, require_trailing_commas, inference_failure_on_function_invocation, unnecessary_parenthesis, unnecessary_raw_strings, unnecessary_null_checks, join_return_with_assignment, prefer_final_locals, avoid_js_rounded_ints, avoid_positional_boolean_parameters, always_specify_types
 
-extension GetBookModelCollection on Isar {
-  IsarCollection<BookModel> get bookModels => this.collection();
+extension GetBookLocalModelCollection on Isar {
+  IsarCollection<BookLocalModel> get bookLocalModels => this.collection();
 }
 
-const BookModelSchema = CollectionSchema(
-  name: r'BookModel',
-  id: -8798672064070329451,
+const BookLocalModelSchema = CollectionSchema(
+  name: r'BookLocalModel',
+  id: 650570065089504654,
   properties: {
     r'author': PropertySchema(
       id: 0,
@@ -63,10 +63,10 @@ const BookModelSchema = CollectionSchema(
       type: IsarType.string,
     )
   },
-  estimateSize: _bookModelEstimateSize,
-  serialize: _bookModelSerialize,
-  deserialize: _bookModelDeserialize,
-  deserializeProp: _bookModelDeserializeProp,
+  estimateSize: _bookLocalModelEstimateSize,
+  serialize: _bookLocalModelSerialize,
+  deserialize: _bookLocalModelDeserialize,
+  deserializeProp: _bookLocalModelDeserializeProp,
   idName: r'id',
   indexes: {
     r'serverId': IndexSchema(
@@ -85,14 +85,14 @@ const BookModelSchema = CollectionSchema(
   },
   links: {},
   embeddedSchemas: {},
-  getId: _bookModelGetId,
-  getLinks: _bookModelGetLinks,
-  attach: _bookModelAttach,
+  getId: _bookLocalModelGetId,
+  getLinks: _bookLocalModelGetLinks,
+  attach: _bookLocalModelAttach,
   version: '3.1.0+1',
 );
 
-int _bookModelEstimateSize(
-  BookModel object,
+int _bookLocalModelEstimateSize(
+  BookLocalModel object,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
@@ -136,8 +136,8 @@ int _bookModelEstimateSize(
   return bytesCount;
 }
 
-void _bookModelSerialize(
-  BookModel object,
+void _bookLocalModelSerialize(
+  BookLocalModel object,
   IsarWriter writer,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
@@ -153,13 +153,13 @@ void _bookModelSerialize(
   writer.writeString(offsets[8], object.userId);
 }
 
-BookModel _bookModelDeserialize(
+BookLocalModel _bookLocalModelDeserialize(
   Id id,
   IsarReader reader,
   List<int> offsets,
   Map<Type, List<int>> allOffsets,
 ) {
-  final object = BookModel();
+  final object = BookLocalModel();
   object.author = reader.readStringOrNull(offsets[0]);
   object.createdAt = reader.readDateTimeOrNull(offsets[1]);
   object.description = reader.readStringOrNull(offsets[2]);
@@ -173,7 +173,7 @@ BookModel _bookModelDeserialize(
   return object;
 }
 
-P _bookModelDeserializeProp<P>(
+P _bookLocalModelDeserializeProp<P>(
   IsarReader reader,
   int propertyId,
   int offset,
@@ -203,24 +203,25 @@ P _bookModelDeserializeProp<P>(
   }
 }
 
-Id _bookModelGetId(BookModel object) {
+Id _bookLocalModelGetId(BookLocalModel object) {
   return object.id;
 }
 
-List<IsarLinkBase<dynamic>> _bookModelGetLinks(BookModel object) {
+List<IsarLinkBase<dynamic>> _bookLocalModelGetLinks(BookLocalModel object) {
   return [];
 }
 
-void _bookModelAttach(IsarCollection<dynamic> col, Id id, BookModel object) {
+void _bookLocalModelAttach(
+    IsarCollection<dynamic> col, Id id, BookLocalModel object) {
   object.id = id;
 }
 
-extension BookModelByIndex on IsarCollection<BookModel> {
-  Future<BookModel?> getByServerId(String? serverId) {
+extension BookLocalModelByIndex on IsarCollection<BookLocalModel> {
+  Future<BookLocalModel?> getByServerId(String? serverId) {
     return getByIndex(r'serverId', [serverId]);
   }
 
-  BookModel? getByServerIdSync(String? serverId) {
+  BookLocalModel? getByServerIdSync(String? serverId) {
     return getByIndexSync(r'serverId', [serverId]);
   }
 
@@ -232,12 +233,12 @@ extension BookModelByIndex on IsarCollection<BookModel> {
     return deleteByIndexSync(r'serverId', [serverId]);
   }
 
-  Future<List<BookModel?>> getAllByServerId(List<String?> serverIdValues) {
+  Future<List<BookLocalModel?>> getAllByServerId(List<String?> serverIdValues) {
     final values = serverIdValues.map((e) => [e]).toList();
     return getAllByIndex(r'serverId', values);
   }
 
-  List<BookModel?> getAllByServerIdSync(List<String?> serverIdValues) {
+  List<BookLocalModel?> getAllByServerIdSync(List<String?> serverIdValues) {
     final values = serverIdValues.map((e) => [e]).toList();
     return getAllByIndexSync(r'serverId', values);
   }
@@ -252,36 +253,37 @@ extension BookModelByIndex on IsarCollection<BookModel> {
     return deleteAllByIndexSync(r'serverId', values);
   }
 
-  Future<Id> putByServerId(BookModel object) {
+  Future<Id> putByServerId(BookLocalModel object) {
     return putByIndex(r'serverId', object);
   }
 
-  Id putByServerIdSync(BookModel object, {bool saveLinks = true}) {
+  Id putByServerIdSync(BookLocalModel object, {bool saveLinks = true}) {
     return putByIndexSync(r'serverId', object, saveLinks: saveLinks);
   }
 
-  Future<List<Id>> putAllByServerId(List<BookModel> objects) {
+  Future<List<Id>> putAllByServerId(List<BookLocalModel> objects) {
     return putAllByIndex(r'serverId', objects);
   }
 
-  List<Id> putAllByServerIdSync(List<BookModel> objects,
+  List<Id> putAllByServerIdSync(List<BookLocalModel> objects,
       {bool saveLinks = true}) {
     return putAllByIndexSync(r'serverId', objects, saveLinks: saveLinks);
   }
 }
 
-extension BookModelQueryWhereSort
-    on QueryBuilder<BookModel, BookModel, QWhere> {
-  QueryBuilder<BookModel, BookModel, QAfterWhere> anyId() {
+extension BookLocalModelQueryWhereSort
+    on QueryBuilder<BookLocalModel, BookLocalModel, QWhere> {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
     });
   }
 }
 
-extension BookModelQueryWhere
-    on QueryBuilder<BookModel, BookModel, QWhereClause> {
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> idEqualTo(Id id) {
+extension BookLocalModelQueryWhere
+    on QueryBuilder<BookLocalModel, BookLocalModel, QWhereClause> {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause> idEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: id,
@@ -290,7 +292,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> idNotEqualTo(Id id) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause> idNotEqualTo(
+      Id id) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -312,7 +315,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> idGreaterThan(Id id,
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause> idGreaterThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -321,7 +325,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> idLessThan(Id id,
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause> idLessThan(
+      Id id,
       {bool include = false}) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(
@@ -330,7 +335,7 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> idBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause> idBetween(
     Id lowerId,
     Id upperId, {
     bool includeLower = true,
@@ -346,7 +351,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> serverIdIsNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
+      serverIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'serverId',
@@ -355,7 +361,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> serverIdIsNotNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
+      serverIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.between(
         indexName: r'serverId',
@@ -366,8 +373,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> serverIdEqualTo(
-      String? serverId) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
+      serverIdEqualTo(String? serverId) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'serverId',
@@ -376,8 +383,8 @@ extension BookModelQueryWhere
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterWhereClause> serverIdNotEqualTo(
-      String? serverId) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
+      serverIdNotEqualTo(String? serverId) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -412,9 +419,10 @@ extension BookModelQueryWhere
   }
 }
 
-extension BookModelQueryFilter
-    on QueryBuilder<BookModel, BookModel, QFilterCondition> {
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorIsNull() {
+extension BookLocalModelQueryFilter
+    on QueryBuilder<BookLocalModel, BookLocalModel, QFilterCondition> {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'author',
@@ -422,7 +430,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorIsNotNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'author',
@@ -430,7 +439,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -443,7 +453,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorGreaterThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -458,7 +469,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -473,7 +485,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -492,7 +505,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorStartsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -505,7 +519,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorEndsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -518,9 +533,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'author',
@@ -530,9 +544,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'author',
@@ -542,7 +555,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorIsEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'author',
@@ -551,7 +565,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> authorIsNotEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      authorIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'author',
@@ -560,7 +575,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> createdAtIsNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      createdAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'createdAt',
@@ -568,7 +584,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       createdAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -577,8 +593,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> createdAtEqualTo(
-      DateTime? value) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      createdAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'createdAt',
@@ -587,7 +603,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       createdAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -601,7 +617,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> createdAtLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      createdAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -614,7 +631,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> createdAtBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      createdAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -631,7 +649,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       descriptionIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -640,7 +658,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       descriptionIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -649,7 +667,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> descriptionEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      descriptionEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -662,7 +681,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       descriptionGreaterThan(
     String? value, {
     bool include = false,
@@ -678,7 +697,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> descriptionLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      descriptionLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -693,7 +713,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> descriptionBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      descriptionBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -712,7 +733,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       descriptionStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -726,7 +747,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> descriptionEndsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      descriptionEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -739,9 +761,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> descriptionContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      descriptionContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'description',
@@ -751,9 +772,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> descriptionMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      descriptionMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'description',
@@ -763,7 +783,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       descriptionIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -773,7 +793,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       descriptionIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -783,7 +803,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> idEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition> idEqualTo(
       Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -793,7 +813,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> idGreaterThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      idGreaterThan(
     Id value, {
     bool include = false,
   }) {
@@ -806,7 +827,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> idLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      idLessThan(
     Id value, {
     bool include = false,
   }) {
@@ -819,7 +841,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> idBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition> idBetween(
     Id lower,
     Id upper, {
     bool includeLower = true,
@@ -836,8 +858,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> isSyncedEqualTo(
-      bool value) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      isSyncedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isSynced',
@@ -846,7 +868,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       publishedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -855,7 +877,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       publishedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -864,7 +886,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> publishedAtEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      publishedAtEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -877,7 +900,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       publishedAtGreaterThan(
     String? value, {
     bool include = false,
@@ -893,7 +916,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> publishedAtLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      publishedAtLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -908,7 +932,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> publishedAtBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      publishedAtBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -927,7 +952,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       publishedAtStartsWith(
     String value, {
     bool caseSensitive = true,
@@ -941,7 +966,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> publishedAtEndsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      publishedAtEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -954,9 +980,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> publishedAtContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      publishedAtContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'publishedAt',
@@ -966,9 +991,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> publishedAtMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      publishedAtMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'publishedAt',
@@ -978,7 +1002,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       publishedAtIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -988,7 +1012,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       publishedAtIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -998,7 +1022,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdIsNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'serverId',
@@ -1006,7 +1031,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       serverIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -1015,7 +1040,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1028,7 +1054,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdGreaterThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1043,7 +1070,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1058,7 +1086,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1077,7 +1106,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdStartsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1090,7 +1120,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdEndsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1103,9 +1134,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'serverId',
@@ -1115,9 +1145,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'serverId',
@@ -1127,7 +1156,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> serverIdIsEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      serverIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'serverId',
@@ -1136,7 +1166,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       serverIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
@@ -1146,7 +1176,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleIsNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'title',
@@ -1154,7 +1185,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleIsNotNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'title',
@@ -1162,7 +1194,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1175,7 +1208,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleGreaterThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1190,7 +1224,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1205,7 +1240,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1224,7 +1260,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleStartsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1237,7 +1274,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleEndsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1250,9 +1288,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'title',
@@ -1262,9 +1299,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'title',
@@ -1274,7 +1310,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleIsEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'title',
@@ -1283,7 +1320,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> titleIsNotEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      titleIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'title',
@@ -1292,7 +1330,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> updatedAtIsNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      updatedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'updatedAt',
@@ -1300,7 +1339,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       updatedAtIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
@@ -1309,8 +1348,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> updatedAtEqualTo(
-      DateTime? value) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      updatedAtEqualTo(DateTime? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'updatedAt',
@@ -1319,7 +1358,7 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       updatedAtGreaterThan(
     DateTime? value, {
     bool include = false,
@@ -1333,7 +1372,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> updatedAtLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      updatedAtLessThan(
     DateTime? value, {
     bool include = false,
   }) {
@@ -1346,7 +1386,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> updatedAtBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      updatedAtBetween(
     DateTime? lower,
     DateTime? upper, {
     bool includeLower = true,
@@ -1363,7 +1404,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
         property: r'userId',
@@ -1371,7 +1413,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsNotNull() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
         property: r'userId',
@@ -1379,7 +1422,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdEqualTo(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
@@ -1392,7 +1436,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdGreaterThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1407,7 +1452,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdLessThan(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -1422,7 +1468,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdBetween(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -1441,7 +1488,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdStartsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1454,7 +1502,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdEndsWith(
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
@@ -1467,9 +1516,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdContains(
-      String value,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
         property: r'userId',
@@ -1479,9 +1527,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
         property: r'userId',
@@ -1491,7 +1538,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'userId',
@@ -1500,7 +1548,8 @@ extension BookModelQueryFilter
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsNotEmpty() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      userIdIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         property: r'userId',
@@ -1510,301 +1559,324 @@ extension BookModelQueryFilter
   }
 }
 
-extension BookModelQueryObject
-    on QueryBuilder<BookModel, BookModel, QFilterCondition> {}
+extension BookLocalModelQueryObject
+    on QueryBuilder<BookLocalModel, BookLocalModel, QFilterCondition> {}
 
-extension BookModelQueryLinks
-    on QueryBuilder<BookModel, BookModel, QFilterCondition> {}
+extension BookLocalModelQueryLinks
+    on QueryBuilder<BookLocalModel, BookLocalModel, QFilterCondition> {}
 
-extension BookModelQuerySortBy on QueryBuilder<BookModel, BookModel, QSortBy> {
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByAuthor() {
+extension BookLocalModelQuerySortBy
+    on QueryBuilder<BookLocalModel, BookLocalModel, QSortBy> {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByAuthor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'author', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByAuthorDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByAuthorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'author', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByCreatedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByCreatedAtDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByDescription() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByDescriptionDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByIsSynced() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByIsSyncedDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByPublishedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByPublishedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'publishedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByPublishedAtDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByPublishedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'publishedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByServerId() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByServerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByServerIdDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByServerIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByTitle() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByTitleDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUpdatedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUpdatedAtDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUserId() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUserIdDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByUserIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.desc);
     });
   }
 }
 
-extension BookModelQuerySortThenBy
-    on QueryBuilder<BookModel, BookModel, QSortThenBy> {
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByAuthor() {
+extension BookLocalModelQuerySortThenBy
+    on QueryBuilder<BookLocalModel, BookLocalModel, QSortThenBy> {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByAuthor() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'author', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByAuthorDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByAuthorDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'author', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByCreatedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByCreatedAtDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByCreatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByDescription() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByDescription() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByDescriptionDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenById() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByIdDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByIsSynced() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByIsSyncedDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByPublishedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByPublishedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'publishedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByPublishedAtDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByPublishedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'publishedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByServerId() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByServerId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByServerIdDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByServerIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'serverId', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByTitle() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByTitle() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByTitleDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByTitleDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'title', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByUpdatedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByUpdatedAtDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByUserId() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByUserId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.asc);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByUserIdDesc() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByUserIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'userId', Sort.desc);
     });
   }
 }
 
-extension BookModelQueryWhereDistinct
-    on QueryBuilder<BookModel, BookModel, QDistinct> {
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByAuthor(
+extension BookLocalModelQueryWhereDistinct
+    on QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> {
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByAuthor(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'author', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByCreatedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct>
+      distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByDescription(
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByDescription(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByIsSynced() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isSynced');
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByPublishedAt(
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByPublishedAt(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'publishedAt', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByServerId(
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByServerId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'serverId', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByTitle(
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByTitle(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'title', caseSensitive: caseSensitive);
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByUpdatedAt() {
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct>
+      distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
     });
   }
 
-  QueryBuilder<BookModel, BookModel, QDistinct> distinctByUserId(
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByUserId(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'userId', caseSensitive: caseSensitive);
@@ -1812,63 +1884,67 @@ extension BookModelQueryWhereDistinct
   }
 }
 
-extension BookModelQueryProperty
-    on QueryBuilder<BookModel, BookModel, QQueryProperty> {
-  QueryBuilder<BookModel, int, QQueryOperations> idProperty() {
+extension BookLocalModelQueryProperty
+    on QueryBuilder<BookLocalModel, BookLocalModel, QQueryProperty> {
+  QueryBuilder<BookLocalModel, int, QQueryOperations> idProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'id');
     });
   }
 
-  QueryBuilder<BookModel, String?, QQueryOperations> authorProperty() {
+  QueryBuilder<BookLocalModel, String?, QQueryOperations> authorProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'author');
     });
   }
 
-  QueryBuilder<BookModel, DateTime?, QQueryOperations> createdAtProperty() {
+  QueryBuilder<BookLocalModel, DateTime?, QQueryOperations>
+      createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
     });
   }
 
-  QueryBuilder<BookModel, String?, QQueryOperations> descriptionProperty() {
+  QueryBuilder<BookLocalModel, String?, QQueryOperations>
+      descriptionProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'description');
     });
   }
 
-  QueryBuilder<BookModel, bool, QQueryOperations> isSyncedProperty() {
+  QueryBuilder<BookLocalModel, bool, QQueryOperations> isSyncedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isSynced');
     });
   }
 
-  QueryBuilder<BookModel, String?, QQueryOperations> publishedAtProperty() {
+  QueryBuilder<BookLocalModel, String?, QQueryOperations>
+      publishedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'publishedAt');
     });
   }
 
-  QueryBuilder<BookModel, String?, QQueryOperations> serverIdProperty() {
+  QueryBuilder<BookLocalModel, String?, QQueryOperations> serverIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'serverId');
     });
   }
 
-  QueryBuilder<BookModel, String?, QQueryOperations> titleProperty() {
+  QueryBuilder<BookLocalModel, String?, QQueryOperations> titleProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'title');
     });
   }
 
-  QueryBuilder<BookModel, DateTime?, QQueryOperations> updatedAtProperty() {
+  QueryBuilder<BookLocalModel, DateTime?, QQueryOperations>
+      updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
     });
   }
 
-  QueryBuilder<BookModel, String?, QQueryOperations> userIdProperty() {
+  QueryBuilder<BookLocalModel, String?, QQueryOperations> userIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'userId');
     });

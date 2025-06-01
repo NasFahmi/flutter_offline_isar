@@ -9,6 +9,6 @@ class DatabaseService {
   static late final Isar db;
   static Future<void> setup() async {
     final appDir = await getApplicationDocumentsDirectory();
-    db = await Isar.open([BookModelSchema,SyncQueueSchema], inspector: true, directory: appDir.path);
+    db = await Isar.open([BookLocalModelSchema,SyncQueueSchema], inspector: true, directory: appDir.path);
   }
 }
