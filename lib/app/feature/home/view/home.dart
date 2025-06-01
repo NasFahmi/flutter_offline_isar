@@ -128,7 +128,6 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               icon: Icon(Icons.plus_one),
             ),
-            GestureDetector(onTap: () {}, child: Text("Offline Mode")),
             SizedBox(width: 16),
           ],
         ),
@@ -171,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           arguments: books[index].serverId,
                         );
                       },
+                      trailing: Text('from server'),
                       subtitle: Text(books[index].author ?? ""),
                       title: Text(books[index].title ?? ""),
                       leading: CircleAvatar(

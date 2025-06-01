@@ -28,6 +28,7 @@ class BookLocalModel {
     return BookLocalModel()
       ..serverId = data.id
       ..title = data.title
+      ..isSynced = true
       ..author = data.author
       ..description = data.description
       ..publishedAt = data.publishedAt
@@ -41,6 +42,7 @@ class BookLocalModel {
       ..serverId = data.id
       ..title = data.title
       ..author = data.author
+      ..isSynced = true
       ..description = data.description
       ..publishedAt = data.publishedAt as String?
       ..userId = data.userId
