@@ -11,10 +11,10 @@ class ApiUtils {
   //     {'Content-Type': 'application/json', 'Accept': 'application/json'};
 
   Map<String, String> headerWithToken(String token) => {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
 
   // Map<String, String> headerTokenForMultipart(String token) => {
   //       'Authorization': 'Bearer $token',
@@ -36,17 +36,24 @@ class ApiUtils {
     String urlLogout = LinkApi.LOGOUTURL;
     return _baseUrl + _apiVersion + urlLogout;
   }
-  String urlBook(){
+
+  String urlBook() {
     String urlBook = LinkApi.BOOKURL;
     return _baseUrl + _apiVersion + urlBook;
   }
-  String urlCreateBook(){
+
+  String urlCreateBook() {
     String urlBook = LinkApi.BOOKURL;
     return _baseUrl + _apiVersion + urlBook;
   }
-   String urlUpdateBook(String id){
+
+  String urlUpdateBook(String id) {
     String urlBook = LinkApi.BOOKURL;
     return '$_baseUrl$_apiVersion$urlBook/$id';
   }
 
+  String urlDeleteBook(String id) {
+    String urlBook = LinkApi.BOOKURL;
+    return '$_baseUrl$_apiVersion$urlBook/$id';
+  }
 }

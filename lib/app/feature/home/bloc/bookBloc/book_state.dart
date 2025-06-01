@@ -18,4 +18,10 @@ final class BookFailed extends BookState {
 
   const BookFailed({required this.message});
 }
+
+final class BookLocalSuccess extends BookState {
+  final List<BookModel> books;
+  const BookLocalSuccess(this.books);
+}
+
 final class TokenExpiredState extends BookState{}

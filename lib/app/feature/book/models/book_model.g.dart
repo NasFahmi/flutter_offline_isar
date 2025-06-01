@@ -32,25 +32,35 @@ const BookModelSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'publishedAt': PropertySchema(
+    r'isSynced': PropertySchema(
       id: 3,
+      name: r'isSynced',
+      type: IsarType.bool,
+    ),
+    r'publishedAt': PropertySchema(
+      id: 4,
       name: r'publishedAt',
       type: IsarType.string,
     ),
     r'serverId': PropertySchema(
-      id: 4,
+      id: 5,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'title',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'updatedAt',
       type: IsarType.dateTime,
+    ),
+    r'userId': PropertySchema(
+      id: 8,
+      name: r'userId',
+      type: IsarType.string,
     )
   },
   estimateSize: _bookModelEstimateSize,
@@ -117,6 +127,12 @@ int _bookModelEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  {
+    final value = object.userId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   return bytesCount;
 }
 
@@ -129,10 +145,12 @@ void _bookModelSerialize(
   writer.writeString(offsets[0], object.author);
   writer.writeDateTime(offsets[1], object.createdAt);
   writer.writeString(offsets[2], object.description);
-  writer.writeString(offsets[3], object.publishedAt);
-  writer.writeString(offsets[4], object.serverId);
-  writer.writeString(offsets[5], object.title);
-  writer.writeDateTime(offsets[6], object.updatedAt);
+  writer.writeBool(offsets[3], object.isSynced);
+  writer.writeString(offsets[4], object.publishedAt);
+  writer.writeString(offsets[5], object.serverId);
+  writer.writeString(offsets[6], object.title);
+  writer.writeDateTime(offsets[7], object.updatedAt);
+  writer.writeString(offsets[8], object.userId);
 }
 
 BookModel _bookModelDeserialize(
@@ -146,10 +164,12 @@ BookModel _bookModelDeserialize(
   object.createdAt = reader.readDateTimeOrNull(offsets[1]);
   object.description = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.publishedAt = reader.readStringOrNull(offsets[3]);
-  object.serverId = reader.readStringOrNull(offsets[4]);
-  object.title = reader.readStringOrNull(offsets[5]);
-  object.updatedAt = reader.readDateTimeOrNull(offsets[6]);
+  object.isSynced = reader.readBool(offsets[3]);
+  object.publishedAt = reader.readStringOrNull(offsets[4]);
+  object.serverId = reader.readStringOrNull(offsets[5]);
+  object.title = reader.readStringOrNull(offsets[6]);
+  object.updatedAt = reader.readDateTimeOrNull(offsets[7]);
+  object.userId = reader.readStringOrNull(offsets[8]);
   return object;
 }
 
@@ -167,13 +187,17 @@ P _bookModelDeserializeProp<P>(
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     case 3:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 4:
       return (reader.readStringOrNull(offset)) as P;
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readStringOrNull(offset)) as P;
+    case 7:
       return (reader.readDateTimeOrNull(offset)) as P;
+    case 8:
+      return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -812,6 +836,16 @@ extension BookModelQueryFilter
     });
   }
 
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> isSyncedEqualTo(
+      bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isSynced',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<BookModel, BookModel, QAfterFilterCondition>
       publishedAtIsNull() {
     return QueryBuilder.apply(this, (query) {
@@ -1328,6 +1362,152 @@ extension BookModelQueryFilter
       ));
     });
   }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'userId',
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'userId',
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'userId',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'userId',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'userId',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'userId',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterFilterCondition> userIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'userId',
+        value: '',
+      ));
+    });
+  }
 }
 
 extension BookModelQueryObject
@@ -1370,6 +1550,18 @@ extension BookModelQuerySortBy on QueryBuilder<BookModel, BookModel, QSortBy> {
   QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByDescriptionDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'description', Sort.desc);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByIsSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSynced', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByIsSyncedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSynced', Sort.desc);
     });
   }
 
@@ -1418,6 +1610,18 @@ extension BookModelQuerySortBy on QueryBuilder<BookModel, BookModel, QSortBy> {
   QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUpdatedAtDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'updatedAt', Sort.desc);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUserId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> sortByUserIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.desc);
     });
   }
 }
@@ -1472,6 +1676,18 @@ extension BookModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByIsSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSynced', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByIsSyncedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
   QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByPublishedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'publishedAt', Sort.asc);
@@ -1519,6 +1735,18 @@ extension BookModelQuerySortThenBy
       return query.addSortBy(r'updatedAt', Sort.desc);
     });
   }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByUserId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QAfterSortBy> thenByUserIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'userId', Sort.desc);
+    });
+  }
 }
 
 extension BookModelQueryWhereDistinct
@@ -1540,6 +1768,12 @@ extension BookModelQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'description', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QDistinct> distinctByIsSynced() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isSynced');
     });
   }
 
@@ -1567,6 +1801,13 @@ extension BookModelQueryWhereDistinct
   QueryBuilder<BookModel, BookModel, QDistinct> distinctByUpdatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'updatedAt');
+    });
+  }
+
+  QueryBuilder<BookModel, BookModel, QDistinct> distinctByUserId(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'userId', caseSensitive: caseSensitive);
     });
   }
 }
@@ -1597,6 +1838,12 @@ extension BookModelQueryProperty
     });
   }
 
+  QueryBuilder<BookModel, bool, QQueryOperations> isSyncedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isSynced');
+    });
+  }
+
   QueryBuilder<BookModel, String?, QQueryOperations> publishedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'publishedAt');
@@ -1618,6 +1865,12 @@ extension BookModelQueryProperty
   QueryBuilder<BookModel, DateTime?, QQueryOperations> updatedAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'updatedAt');
+    });
+  }
+
+  QueryBuilder<BookModel, String?, QQueryOperations> userIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'userId');
     });
   }
 }

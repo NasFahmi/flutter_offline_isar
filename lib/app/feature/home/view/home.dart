@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final internetBloc = BlocProvider.of<InternetBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Book"),
+        title: Text("Book "),
         centerTitle: true,
         leading: Padding(
           padding: const EdgeInsets.only(left: 16),
@@ -102,9 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        actions: [IconButton(onPressed: () {
-          Navigator.pushNamed(context, CREATEBOOK);
-        }, icon: Icon(Icons.plus_one),), IconButton(onPressed: (){}, icon: Icon(Icons.exit_to_app),)],
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, CREATEBOOK);
+            },
+            icon: Icon(Icons.plus_one),
+          ),
+          GestureDetector(onTap: () {},child: Text("Offline Mode"),),
+          SizedBox(width: 16),
+        ],
       ),
       body: BlocBuilder<BookBloc, BookState>(
         builder: (context, state) {
@@ -112,8 +119,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(child: CircularProgressIndicator());
           } else if (state is BookFailed) {
             return Center(child: Text(state.message));
-          } else if (state is BookSuccess) {
-            final books = state.books.data;
+          } else if (state is BookLocalSuccess) {
+            final books = state.books;
             // final books = state.books.data!;
             if (books.isEmpty) {
               return Center(child: Text("Tidak ada buku."));
@@ -128,11 +135,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     onTap: () {
-                      Navigator.pushNamed(context, DETAILBOOK,
-                          arguments: books[index]);
+                      Navigator.pushNamed(
+                        context,
+                        DETAILBOOK,
+                        arguments: books[index],
+                      );
                     },
-                    subtitle: Text(books[index].author),
-                    title: Text(books[index].title),
+                    subtitle: Text(books[index].author??""),
+                    title: Text(books[index].title??""),
                     leading: CircleAvatar(child: Text((index + 1).toString())),
                   );
                 },
