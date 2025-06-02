@@ -44,7 +44,9 @@ class CreateBookBloc extends Bloc<CreateBookEvent, CreateBookState> {
           ..publishedAt = event.publishedAt
           ..createdAt = DateTime.now()
           ..updatedAt = DateTime.now()
-          ..isSynced = false;
+          ..isSynced = false
+          ..isFromServer = false
+          ..isUpdated = false;
         // buat local data offline terlebih dahulu
         await BookDbService().createData(book);
         // buat queue untuk SyncQueue terlebih dahulu

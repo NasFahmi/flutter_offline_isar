@@ -1,5 +1,6 @@
 import 'package:isar/isar.dart';
-import 'package:offline_mode/app/feature/book/detailBook/model/get_book_by_id_model.dart' as book_by_id;
+import 'package:offline_mode/app/feature/book/detailBook/model/get_book_by_id_model.dart'
+    as book_by_id;
 
 import '../../home/model/get_list_book_model.dart' as book;
 part 'book_model.g.dart';
@@ -21,6 +22,8 @@ class BookLocalModel {
   DateTime? createdAt;
   DateTime? updatedAt;
 
+  bool isUpdated = false;
+  bool isFromServer = false; // flag untuk updated dari server
   bool isSynced = false;
   // ✅ Konversi dari server model Datum
   factory BookLocalModel.fromServerDatum(book.Datum data) {

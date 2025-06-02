@@ -57,9 +57,9 @@ class MyRoute {
 
       //? update book
       case UPDATEBOOK:
-        final args = settings.arguments as book.Datum;
+        final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (context) => UpdateBook(data: args),
+          builder: (context) => UpdateBook(serverId: args),
           settings: settings,
         );
 

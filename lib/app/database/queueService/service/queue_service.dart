@@ -118,6 +118,7 @@ class QueueService {
 
     try {
       final response = await NetworkUtils(token: accessToken).patch(link, body);
+      // final response = await NetworkUtils(token: accessToken).put(link, body);
       logger.d(response.toString());
 
       final int statusCode = response[0] as int;

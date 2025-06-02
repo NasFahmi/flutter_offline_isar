@@ -161,9 +161,9 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (state is BookLocalSuccess) {
               final books = state.books;
               // final books = state.books.data!;
-              if (books.isEmpty) {
-                return Center(child: Text("Tidak ada buku."));
-              }
+              // if (books.isEmpty) {
+              //   return Center(child: Text("Tidak ada buku."));
+              // }
               return PullToRefreshWidget(
                 onRefresh: () {
                   context.read<BookBloc>().add(GetBookEvent());
@@ -183,14 +183,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       trailing: Container(
                         padding: EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          color: books[index].isSynced ? Colors.blue : Colors.amber,
+                          color:
+                              books[index].isSynced == true &&
+                                  books[index].isUpdated == false
+                              ? Colors.blue
+                              : books[index].isSynced == false &&
+                                    books[index].isUpdated == false
+                              ? Colors.amber
+                              : books[index].isUpdated == true
+                              ? Colors.green
+                              : Colors.red,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          style: TextStyle(
-                            color: Colors.white
-                          ),
-                          books[index].isSynced ? "from server" : "from local",
+                          style: TextStyle(color: Colors.white),
+                          books[index].isSynced == true &&
+                                  books[index].isUpdated == false
+                              ? "from Server"
+                              : books[index].isSynced == false &&
+                                    books[index].isUpdated == false
+                              ? "from Local"
+                              : books[index].isUpdated == true
+                              ? "updated data"
+                              : "Error",
                         ),
                       ),
                       subtitle: Text(books[index].author ?? ""),

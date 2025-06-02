@@ -6,6 +6,16 @@ sealed class UpdateBookState extends Equatable {
   @override
   List<Object> get props => [];
 }
+final class UpdateBookLoadLoading extends UpdateBookState {}
+final class UpdateBookLoadSuccess extends UpdateBookState {
+  final BookLocalModel data;
+  const UpdateBookLoadSuccess(this.data);
+}
+final class UpdateBookLoadFailed extends UpdateBookState {
+  final String message;
+  const UpdateBookLoadFailed(this.message);
+}
+
 
 final class UpdateBookInitial extends UpdateBookState {}
 final class UpdateBookLoading extends UpdateBookState {}

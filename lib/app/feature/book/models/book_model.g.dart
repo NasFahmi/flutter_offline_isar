@@ -32,33 +32,43 @@ const BookLocalModelSchema = CollectionSchema(
       name: r'description',
       type: IsarType.string,
     ),
-    r'isSynced': PropertySchema(
+    r'isFromServer': PropertySchema(
       id: 3,
+      name: r'isFromServer',
+      type: IsarType.bool,
+    ),
+    r'isSynced': PropertySchema(
+      id: 4,
       name: r'isSynced',
       type: IsarType.bool,
     ),
+    r'isUpdated': PropertySchema(
+      id: 5,
+      name: r'isUpdated',
+      type: IsarType.bool,
+    ),
     r'publishedAt': PropertySchema(
-      id: 4,
+      id: 6,
       name: r'publishedAt',
       type: IsarType.string,
     ),
     r'serverId': PropertySchema(
-      id: 5,
+      id: 7,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'title': PropertySchema(
-      id: 6,
+      id: 8,
       name: r'title',
       type: IsarType.string,
     ),
     r'updatedAt': PropertySchema(
-      id: 7,
+      id: 9,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'userId': PropertySchema(
-      id: 8,
+      id: 10,
       name: r'userId',
       type: IsarType.string,
     )
@@ -131,12 +141,14 @@ void _bookLocalModelSerialize(
   writer.writeString(offsets[0], object.author);
   writer.writeDateTime(offsets[1], object.createdAt);
   writer.writeString(offsets[2], object.description);
-  writer.writeBool(offsets[3], object.isSynced);
-  writer.writeString(offsets[4], object.publishedAt);
-  writer.writeString(offsets[5], object.serverId);
-  writer.writeString(offsets[6], object.title);
-  writer.writeDateTime(offsets[7], object.updatedAt);
-  writer.writeString(offsets[8], object.userId);
+  writer.writeBool(offsets[3], object.isFromServer);
+  writer.writeBool(offsets[4], object.isSynced);
+  writer.writeBool(offsets[5], object.isUpdated);
+  writer.writeString(offsets[6], object.publishedAt);
+  writer.writeString(offsets[7], object.serverId);
+  writer.writeString(offsets[8], object.title);
+  writer.writeDateTime(offsets[9], object.updatedAt);
+  writer.writeString(offsets[10], object.userId);
 }
 
 BookLocalModel _bookLocalModelDeserialize(
@@ -150,12 +162,14 @@ BookLocalModel _bookLocalModelDeserialize(
   object.createdAt = reader.readDateTimeOrNull(offsets[1]);
   object.description = reader.readStringOrNull(offsets[2]);
   object.id = id;
-  object.isSynced = reader.readBool(offsets[3]);
-  object.publishedAt = reader.readStringOrNull(offsets[4]);
-  object.serverId = reader.readStringOrNull(offsets[5]);
-  object.title = reader.readStringOrNull(offsets[6]);
-  object.updatedAt = reader.readDateTimeOrNull(offsets[7]);
-  object.userId = reader.readStringOrNull(offsets[8]);
+  object.isFromServer = reader.readBool(offsets[3]);
+  object.isSynced = reader.readBool(offsets[4]);
+  object.isUpdated = reader.readBool(offsets[5]);
+  object.publishedAt = reader.readStringOrNull(offsets[6]);
+  object.serverId = reader.readStringOrNull(offsets[7]);
+  object.title = reader.readStringOrNull(offsets[8]);
+  object.updatedAt = reader.readDateTimeOrNull(offsets[9]);
+  object.userId = reader.readStringOrNull(offsets[10]);
   return object;
 }
 
@@ -175,14 +189,18 @@ P _bookLocalModelDeserializeProp<P>(
     case 3:
       return (reader.readBool(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 5:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readBool(offset)) as P;
     case 6:
       return (reader.readStringOrNull(offset)) as P;
     case 7:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 8:
+      return (reader.readStringOrNull(offset)) as P;
+    case 9:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 10:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -723,10 +741,30 @@ extension BookLocalModelQueryFilter
   }
 
   QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      isFromServerEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isFromServer',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
       isSyncedEqualTo(bool value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'isSynced',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterFilterCondition>
+      isUpdatedEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'isUpdated',
         value: value,
       ));
     });
@@ -1471,6 +1509,20 @@ extension BookLocalModelQuerySortBy
     });
   }
 
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByIsFromServer() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFromServer', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByIsFromServerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFromServer', Sort.desc);
+    });
+  }
+
   QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
@@ -1481,6 +1533,19 @@ extension BookLocalModelQuerySortBy
       sortByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> sortByIsUpdated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUpdated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      sortByIsUpdatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUpdated', Sort.desc);
     });
   }
 
@@ -1604,6 +1669,20 @@ extension BookLocalModelQuerySortThenBy
     });
   }
 
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByIsFromServer() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFromServer', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByIsFromServerDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isFromServer', Sort.desc);
+    });
+  }
+
   QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.asc);
@@ -1614,6 +1693,19 @@ extension BookLocalModelQuerySortThenBy
       thenByIsSyncedDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'isSynced', Sort.desc);
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy> thenByIsUpdated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUpdated', Sort.asc);
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QAfterSortBy>
+      thenByIsUpdatedDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'isUpdated', Sort.desc);
     });
   }
 
@@ -1706,9 +1798,23 @@ extension BookLocalModelQueryWhereDistinct
     });
   }
 
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct>
+      distinctByIsFromServer() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isFromServer');
+    });
+  }
+
   QueryBuilder<BookLocalModel, BookLocalModel, QDistinct> distinctByIsSynced() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'isSynced');
+    });
+  }
+
+  QueryBuilder<BookLocalModel, BookLocalModel, QDistinct>
+      distinctByIsUpdated() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'isUpdated');
     });
   }
 
@@ -1776,9 +1882,21 @@ extension BookLocalModelQueryProperty
     });
   }
 
+  QueryBuilder<BookLocalModel, bool, QQueryOperations> isFromServerProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isFromServer');
+    });
+  }
+
   QueryBuilder<BookLocalModel, bool, QQueryOperations> isSyncedProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'isSynced');
+    });
+  }
+
+  QueryBuilder<BookLocalModel, bool, QQueryOperations> isUpdatedProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'isUpdated');
     });
   }
 

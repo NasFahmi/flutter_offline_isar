@@ -19,61 +19,65 @@ class BookBloc extends Bloc<BookEvent, BookState> {
   }
   Future<void> getBookEvent(GetBookEvent event, Emitter<BookState> emit) async {
     emit(BookLoading());
-    String? accessToken = await SharedPrefUtils().getAccessToken();
 
+    final accessToken = await SharedPrefUtils().getAccessToken();
     if (accessToken == null) {
       emit(TokenExpiredState());
-    } else {
-      try {
-        final bool isConnected =
-            await InternetConnectionChecker.instance.hasConnection;
-        logger.d('is connected $isConnected in home');
-        // ✅ Ambil dari lokal dulu
-        final localBooks = await BookDbService().getDataIsSyncFalseFirst();
-        if (localBooks.isNotEmpty) {
-          emit(BookLocalSuccess(localBooks));
-        }
-        if (isConnected) {
-          dynamic response = await BookServices().getListBook(accessToken);
-          int statusCode = response[0] as int;
-          GetListBookModel book = GetListBookModel.fromJson(response[1]);
-          // logger.d(jadwalPosyandu.data[0].namaKegiatan);
-          if (statusCode == 200) {
-            emit(BookSuccess(books: book));
-            logger.d('succes get data book');
-            logger.d(book);
+      return;
+    }
 
-            // !konversi data dari server ke lokal
-            List<BookLocalModel> localBooks = book.data
-                .map(
-                  (b) => BookLocalModel.fromServerDatum(b),
-                ) // Buat converter-nya
-                .toList();
+    try {
+      final bool isConnected =
+          await InternetConnectionChecker.instance.hasConnection;
+      logger.d('is connected $isConnected in home');
 
-            // 💾 Simpan ke lokal (replace)
-            await BookDbService()
-                .clearSyncedData(); // hanya hapus yang dari server
-            final unsyncedLocalBooks = await BookDbService().getUnsyncedData();
+      // ✅ Ambil semua data lokal (data dari server, dan data hasil create/update lokal)
+      final localBooks = await BookDbService().getMergedDisplayData();
+      emit(BookLocalSuccess(localBooks));
 
-            // ✅ Ambil dari lokal lagi untuk pastikan konsistensi
-            await BookDbService().saveData(unsyncedLocalBooks);
-            await BookDbService().saveData(
-              localBooks,
-            ); //save hasil fecth ke db lokal
-            final updatedLocal = await BookDbService().getAllData();
-            emit(BookLocalSuccess(updatedLocal));
-            // emit(BookSuccess(books: book));
-          } else if (statusCode == 401) {
-            emit(TokenExpiredState());
-          } else {
-            emit(BookFailed(message: book.message));
-          }
+      if (isConnected) {
+        // ✅ Fetch dari server
+        final response = await BookServices().getListBook(accessToken);
+        final statusCode = response[0] as int;
+        final serverData = GetListBookModel.fromJson(response[1]);
+
+        if (statusCode == 200) {
+          logger.d('Success get data book from server');
+          logger.d(serverData);
+
+          // ✅ Konversi dan tandai data hasil dari server
+          final fetchedServerBooks = serverData.data
+              .map(
+                (b) => BookLocalModel.fromServerDatum(b)..isFromServer = true,
+              )
+              .toList();
+
+          // ✅ Hapus hanya data hasil fetch server sebelumnya
+          await BookDbService().clearServerOnlyData();
+
+          // ✅ Ambil ulang data lokal yang:
+          // - Belum tersinkronisasi
+          // - Merupakan update lokal terhadap data server
+          final unsynced = await BookDbService().getUnsyncedData();
+          final updatedFromServer = await BookDbService()
+              .getUpdatedDataForServerSync();
+
+          // ✅ Simpan kembali data agar merge sempurna
+          await BookDbService().saveData(unsynced);
+          await BookDbService().saveData(updatedFromServer);
+          await BookDbService().saveData(fetchedServerBooks);
+
+          // ✅ Ambil ulang semua data untuk ditampilkan
+          final mergedBooks = await BookDbService().getMergedDisplayData();
+          emit(BookLocalSuccess(mergedBooks));
+        } else if (statusCode == 401) {
+          emit(TokenExpiredState());
         } else {
-          emit(BookFailed(message: 'Tidak ada koneksi internet'));
+          emit(BookFailed(message: serverData.message));
         }
-      } catch (error) {
-        emit(BookFailed(message: error.toString()));
       }
+    } catch (e) {
+      emit(BookFailed(message: e.toString()));
     }
   }
 }
