@@ -71,23 +71,6 @@ class BookDbService implements InterfaceDbService<BookLocalModel> {
         .findAll();
   }
 
-  Future<List<BookLocalModel>> getUpdatedDataForServerSync() async {
-    return await DatabaseService.db.bookLocalModels
-        .filter()
-        .isSyncedEqualTo(true)
-        .isUpdatedEqualTo(true)
-        .findAll();
-  }
-
-  Future<void> clearServerOnlyData() async {
-    await DatabaseService.db.writeTxn(() async {
-      await DatabaseService.db.bookLocalModels
-          .filter()
-          .isFromServerEqualTo(true)
-          .deleteAll();
-    });
-  }
-
   @override
   Future<void> clearSyncedData() async {
     try {
@@ -125,15 +108,22 @@ class BookDbService implements InterfaceDbService<BookLocalModel> {
   }
 
   @override
-  Future<List<BookLocalModel>> getDataIsSyncFalseFirst() async {
+  Future<List<BookLocalModel>> getUpdatedDataForServerSync() async {
     return await DatabaseService.db.bookLocalModels
-        .where()
         .filter()
-        .isSyncedEqualTo(false)
-        .or()
         .isSyncedEqualTo(true)
-        .sortByIsSynced()
+        .isUpdatedEqualTo(true)
         .findAll();
+  }
+
+  @override
+  Future<void> clearServerOnlyData() async {
+    await DatabaseService.db.writeTxn(() async {
+      await DatabaseService.db.bookLocalModels
+          .filter()
+          .isFromServerEqualTo(true)
+          .deleteAll();
+    });
   }
 
   /// Ambil data untuk ditampilkan ke user
@@ -141,6 +131,7 @@ class BookDbService implements InterfaceDbService<BookLocalModel> {
   /// - Data dari server (`isFromServer == true`)
   /// - Data update lokal (`isUpdated == true`)
   /// - Data yang belum disync (`isSynced == false`)
+  @override
   Future<List<BookLocalModel>> getMergedDisplayData() async {
     return await DatabaseService.db.bookLocalModels
         .where()
