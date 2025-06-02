@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:offline_mode/app/feature/login/model/get_user_detial_model.dart';
 import 'package:offline_mode/app/feature/login/model/login_post_model.dart';
 import 'package:offline_mode/app/feature/login/model/login_response_model.dart';
 import 'package:offline_mode/app/feature/login/service/login_services.dart';
@@ -15,27 +16,35 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginSubmited>(login);
   }
 
-  Future<void> login (LoginSubmited event, Emitter<LoginState> emit) async {
+  Future<void> login(LoginSubmited event, Emitter<LoginState> emit) async {
     emit(LoginProcess());
     emit(LoginLoading());
 
     try {
       logger.d("email ${event.email} password ${event.password}");
-      LoginPostModel data = LoginPostModel(username: event.email, password: event.password);
+      LoginPostModel data = LoginPostModel(
+        username: event.email,
+        password: event.password,
+      );
       List<dynamic> response = await LoginServices().loginService(data);
 
       int statusCode = response[0] as int;
       logger.d('status code = ${statusCode.toString()}');
-      LoginResponseModel loginResponseModel =
-          LoginResponseModel.fromJson(response[1]);
+      LoginResponseModel loginResponseModel = LoginResponseModel.fromJson(
+        response[1],
+      );
       logger.d(loginResponseModel.toString());
 
       if (statusCode == 200) {
-
-        SharedPrefUtils()
-            .storedAccessToken(loginResponseModel.accessToken);
+        List<dynamic> responseMe = await LoginServices().me(
+          loginResponseModel.accessToken,
+        );
+        GetDetailUserModel responseMeModel = GetDetailUserModel.fromJson(
+          responseMe[1],
+        );
+        SharedPrefUtils().storedAccessToken(loginResponseModel.accessToken);
         SharedPrefUtils().storedRefreshToken(loginResponseModel.refreshToken);
-
+        SharedPrefUtils().storedAccount(responseMeModel.id);
         emit(LoginSuccess());
       } else if (statusCode == 400) {
         emit(LoginFailed("error Validation"));

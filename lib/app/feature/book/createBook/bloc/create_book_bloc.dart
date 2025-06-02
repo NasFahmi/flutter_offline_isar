@@ -9,6 +9,7 @@ import '../../../../database/queueService/service/queue_service.dart';
 import '../../models/book_model.dart';
 import '../../services/book_db_service.dart';
 import 'package:offline_mode/utils/shared_preferences_utils/shared_preferences_utils.dart';
+import 'package:uuid/uuid.dart';
 
 part 'create_book_event.dart';
 part 'create_book_state.dart';
@@ -29,12 +30,14 @@ class CreateBookBloc extends Bloc<CreateBookEvent, CreateBookState> {
       emit(TokenExpiredState());
     } else {
       try {
-        final String? userAccount = await SharedPrefUtils().getAccount();
-        logger.d(userAccount);
+        var uuid = Uuid();
+        final String? userId = await SharedPrefUtils().getAccount();
+        logger.d(userId); //userId berisi userId
+        String serverid = uuid.v4();
         // try for create data offline first
         final book = BookLocalModel()
-          ..serverId = null
-          ..userId = userAccount
+          ..serverId = serverid
+          ..userId = userId
           ..title = event.title
           ..author = event.author
           ..description = event.decs

@@ -36,6 +36,10 @@ class ApiUtils {
     String urlLogout = LinkApi.LOGOUTURL;
     return _baseUrl + _apiVersion + urlLogout;
   }
+  String urlme() {
+    String urlMe = LinkApi.USERURL;
+    return _baseUrl + _apiVersion + urlMe;
+  }
 
   String urlBook() {
     String urlBook = LinkApi.BOOKURL;

@@ -9,5 +9,6 @@ abstract class InterfaceDbService<T> {
   Future<List<T>> getUnsyncedData(); //get all unsynced
   Future<void> clearSyncedData(); // clear all synced
   Future<void> clearUnsyncedData(); // clear all unsynced
+  Future<List<T>> getDataIsSyncFalseFirst();
 
 }

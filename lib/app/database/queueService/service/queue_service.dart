@@ -1,6 +1,7 @@
 import 'package:isar/isar.dart';
 import 'package:offline_mode/app/database/database_service.dart';
 import 'package:offline_mode/app/database/queueService/model/sync_queue_model.dart';
+import 'package:offline_mode/app/feature/book/models/book_model.dart';
 import 'package:offline_mode/utils/logger/logger.dart';
 
 import '../../../../utils/network_utils/network_utils.dart';
@@ -36,7 +37,7 @@ class QueueService {
 
     for (final queue in pendingQueue) {
       try {
-        logger.d(queue);
+        logger.d("Syncing queue: ${queue.collectionName} ${queue.operation}");
 
         bool success;
         String? errorMessage;
@@ -72,6 +73,16 @@ class QueueService {
       await DatabaseService.db.syncQueues
           .filter()
           .statusEqualTo(Status.success)
+          .deleteAll();
+    });
+
+    // ? setelah berhasil mengpost data ke server maka kita perlu untuk menghapus data local 
+    //! namun disini terlalu boilerplate jika kita memiliki banyak fitur yang perlu offline first approch
+    // after sync delete all success task
+    await DatabaseService.db.writeTxn(() async {
+      await DatabaseService.db.bookLocalModels
+          .filter()
+          .isSyncedEqualTo(false)
           .deleteAll();
     });
   }
@@ -130,5 +141,8 @@ class QueueService {
     await DatabaseService.db.writeTxn(() async {
       await DatabaseService.db.syncQueues.delete(id);
     });
+  }
+  Future<List<SyncQueue>> getAllQueue() async {
+    return await DatabaseService.db.syncQueues.where().findAll();
   }
 }

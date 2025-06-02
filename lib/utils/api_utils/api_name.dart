@@ -11,4 +11,5 @@ abstract class LinkApi {
   static const LOGOUTURL = "/auth/logout";
   static const REGISTERURL = "/auth/register";
   static const BOOKURL = "/books";
+  static const USERURL = "/users/me";
 }

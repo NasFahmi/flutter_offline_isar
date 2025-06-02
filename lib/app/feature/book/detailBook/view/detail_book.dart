@@ -46,6 +46,7 @@ class _DetailBookViewState extends State<DetailBookView> {
             body: SafeArea(
               child: Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   spacing: 8,
                   children: [
                     Text("Detail Book"),

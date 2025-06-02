@@ -6,3 +6,4 @@ sealed class TaskSyncEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+final class GetTaskSync extends TaskSyncEvent {}

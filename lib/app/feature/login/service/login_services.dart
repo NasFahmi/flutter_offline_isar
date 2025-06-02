@@ -10,8 +10,20 @@ class LoginServices {
     logger.d('api service');
     final String link = ApiUtils().urlLogin();
     final String body = json.encode(loginModel.toJson());
+    logger.d('body $body');
 
     return await NetworkUtils().post(link, body).then((response) {
+      logger.d(response.toString());
+      return response;
+    });
+  }
+  Future<List<dynamic>> me(String token) async {
+    final String link = ApiUtils().urlme();
+    final Map<String, dynamic> parameterQuery = {};
+
+    return await NetworkUtils(token: token).get(link, parameterQuery).then((
+      response,
+    ) {
       logger.d(response.toString());
       return response;
     });

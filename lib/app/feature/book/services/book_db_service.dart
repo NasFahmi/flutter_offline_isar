@@ -104,4 +104,16 @@ class BookDbService implements InterfaceDbService<BookLocalModel> {
         .isSyncedEqualTo(true)
         .findAll();
   }
+  
+  @override
+  Future<List<BookLocalModel>> getDataIsSyncFalseFirst() async{
+    return await DatabaseService.db.bookLocalModels
+      .where()
+      .filter()
+      .isSyncedEqualTo(false)
+      .or()
+      .isSyncedEqualTo(true)
+      .sortByIsSynced()
+      .findAll();
+  }
 }

@@ -31,45 +31,48 @@ class _CreateBookViewState extends State<CreateBookView> {
     return Scaffold(
       appBar: AppBar(title: const Text("Create Book")),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Create Book'),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: titleController,
-              decoration: InputDecoration(label: Text('Title Book')),
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: authorController,
-              decoration: InputDecoration(label: Text('Author Book')),
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: descriptionController,
-              decoration: InputDecoration(label: Text('Description Book')),
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: publishedAtController,
-              decoration: InputDecoration(label: Text('Published At Book')),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                context.read<CreateBookBloc>().add(
-                  CreateBookSubmited(
-                    title: titleController.text,
-                    author: authorController.text,
-                    decs: descriptionController.text,
-                    publishedAt: publishedAtController.text,
-                  ),
-                );
-              },
-              child: Text("Submit"),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Create Book'),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: titleController,
+                decoration: InputDecoration(label: Text('Title Book')),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: authorController,
+                decoration: InputDecoration(label: Text('Author Book')),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: descriptionController,
+                decoration: InputDecoration(label: Text('Description Book')),
+              ),
+              SizedBox(height: 20),
+              TextFormField(
+                controller: publishedAtController,
+                decoration: InputDecoration(label: Text('Published At Book')),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  context.read<CreateBookBloc>().add(
+                    CreateBookSubmited(
+                      title: titleController.text,
+                      author: authorController.text,
+                      decs: descriptionController.text,
+                      publishedAt: publishedAtController.text,
+                    ),
+                  );
+                },
+                child: Text("Submit"),
+              ),
+            ],
+          ),
         ),
       ),
     );
