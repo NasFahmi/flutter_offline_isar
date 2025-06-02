@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:offline_mode/app/feature/book/createBook/model/book_post_model.dart';
+import 'package:offline_mode/utils/logger/logger.dart';
 import '../../../../../utils/api_utils/api_utils.dart';
 import '../../../../database/queueService/service/queue_service.dart';
 import '../../models/book_model.dart';
@@ -28,9 +29,12 @@ class CreateBookBloc extends Bloc<CreateBookEvent, CreateBookState> {
       emit(TokenExpiredState());
     } else {
       try {
+        final String? userAccount = await SharedPrefUtils().getAccount();
+        logger.d(userAccount);
         // try for create data offline first
         final book = BookLocalModel()
           ..serverId = null
+          ..userId = userAccount
           ..title = event.title
           ..author = event.author
           ..description = event.decs
@@ -50,7 +54,7 @@ class CreateBookBloc extends Bloc<CreateBookEvent, CreateBookState> {
         String payload = json.encode(data.toJson());
         final String link = ApiUtils().urlCreateBook();
         await QueueService().addQueue('book', 'post', payload, link);
-
+        logger.d("success create sync queue book ");
         emit(CreateBookSuccess());
         // BookPostModel data = BookPostModel(title: event.title, author: event.author, description: event.decs, publishedAt: event.publishedAt);
         // dynamic response = await BookServices().createBook(

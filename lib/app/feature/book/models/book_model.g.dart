@@ -68,21 +68,7 @@ const BookLocalModelSchema = CollectionSchema(
   deserialize: _bookLocalModelDeserialize,
   deserializeProp: _bookLocalModelDeserializeProp,
   idName: r'id',
-  indexes: {
-    r'serverId': IndexSchema(
-      id: -7950187970872907662,
-      name: r'serverId',
-      unique: true,
-      replace: false,
-      properties: [
-        IndexPropertySchema(
-          name: r'serverId',
-          type: IndexType.hash,
-          caseSensitive: true,
-        )
-      ],
-    )
-  },
+  indexes: {},
   links: {},
   embeddedSchemas: {},
   getId: _bookLocalModelGetId,
@@ -216,61 +202,6 @@ void _bookLocalModelAttach(
   object.id = id;
 }
 
-extension BookLocalModelByIndex on IsarCollection<BookLocalModel> {
-  Future<BookLocalModel?> getByServerId(String? serverId) {
-    return getByIndex(r'serverId', [serverId]);
-  }
-
-  BookLocalModel? getByServerIdSync(String? serverId) {
-    return getByIndexSync(r'serverId', [serverId]);
-  }
-
-  Future<bool> deleteByServerId(String? serverId) {
-    return deleteByIndex(r'serverId', [serverId]);
-  }
-
-  bool deleteByServerIdSync(String? serverId) {
-    return deleteByIndexSync(r'serverId', [serverId]);
-  }
-
-  Future<List<BookLocalModel?>> getAllByServerId(List<String?> serverIdValues) {
-    final values = serverIdValues.map((e) => [e]).toList();
-    return getAllByIndex(r'serverId', values);
-  }
-
-  List<BookLocalModel?> getAllByServerIdSync(List<String?> serverIdValues) {
-    final values = serverIdValues.map((e) => [e]).toList();
-    return getAllByIndexSync(r'serverId', values);
-  }
-
-  Future<int> deleteAllByServerId(List<String?> serverIdValues) {
-    final values = serverIdValues.map((e) => [e]).toList();
-    return deleteAllByIndex(r'serverId', values);
-  }
-
-  int deleteAllByServerIdSync(List<String?> serverIdValues) {
-    final values = serverIdValues.map((e) => [e]).toList();
-    return deleteAllByIndexSync(r'serverId', values);
-  }
-
-  Future<Id> putByServerId(BookLocalModel object) {
-    return putByIndex(r'serverId', object);
-  }
-
-  Id putByServerIdSync(BookLocalModel object, {bool saveLinks = true}) {
-    return putByIndexSync(r'serverId', object, saveLinks: saveLinks);
-  }
-
-  Future<List<Id>> putAllByServerId(List<BookLocalModel> objects) {
-    return putAllByIndex(r'serverId', objects);
-  }
-
-  List<Id> putAllByServerIdSync(List<BookLocalModel> objects,
-      {bool saveLinks = true}) {
-    return putAllByIndexSync(r'serverId', objects, saveLinks: saveLinks);
-  }
-}
-
 extension BookLocalModelQueryWhereSort
     on QueryBuilder<BookLocalModel, BookLocalModel, QWhere> {
   QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhere> anyId() {
@@ -348,73 +279,6 @@ extension BookLocalModelQueryWhere
         upper: upperId,
         includeUpper: includeUpper,
       ));
-    });
-  }
-
-  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
-      serverIdIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'serverId',
-        value: [null],
-      ));
-    });
-  }
-
-  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
-      serverIdIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'serverId',
-        lower: [null],
-        includeLower: false,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
-      serverIdEqualTo(String? serverId) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.equalTo(
-        indexName: r'serverId',
-        value: [serverId],
-      ));
-    });
-  }
-
-  QueryBuilder<BookLocalModel, BookLocalModel, QAfterWhereClause>
-      serverIdNotEqualTo(String? serverId) {
-    return QueryBuilder.apply(this, (query) {
-      if (query.whereSort == Sort.asc) {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'serverId',
-              lower: [],
-              upper: [serverId],
-              includeUpper: false,
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'serverId',
-              lower: [serverId],
-              includeLower: false,
-              upper: [],
-            ));
-      } else {
-        return query
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'serverId',
-              lower: [serverId],
-              includeLower: false,
-              upper: [],
-            ))
-            .addWhereClause(IndexWhereClause.between(
-              indexName: r'serverId',
-              lower: [],
-              upper: [serverId],
-              includeUpper: false,
-            ));
-      }
     });
   }
 }

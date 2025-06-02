@@ -17,6 +17,7 @@ class Home extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => BookBloc()),
         BlocProvider(create: (context) => InternetBloc()),
+        BlocProvider(create: (context) => SyncBloc()),
       ],
       child: const HomeScreen(),
     );
@@ -179,7 +180,19 @@ class _HomeScreenState extends State<HomeScreen> {
                           arguments: books[index].serverId,
                         );
                       },
-                      trailing: Text('from server'),
+                      trailing: Container(
+                        padding: EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: books[index].isSynced ? Colors.blue : Colors.amber,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          style: TextStyle(
+                            color: Colors.white
+                          ),
+                          books[index].isSynced ? "from server" : "from local",
+                        ),
+                      ),
                       subtitle: Text(books[index].author ?? ""),
                       title: Text(books[index].title ?? ""),
                       leading: CircleAvatar(

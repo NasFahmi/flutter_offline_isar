@@ -38,22 +38,30 @@ class QueueService {
       try {
         logger.d(queue);
 
-        bool success = false;
+        bool success;
+        String? errorMessage;
 
         if (queue.operation == 'post') {
-          success = await postToServer(queue);
+          (success, errorMessage) = await postToServer(queue);
         } else if (queue.operation == 'patch') {
-          success = await patchToServer(queue);
+          (success, errorMessage) = await patchToServer(queue);
+        } else {
+          // If operation is not recognized, mark as failed
+          success = false;
+          errorMessage = 'Unknown operation: ${queue.operation}';
         }
 
+        queue.status = success ? Status.success : Status.failed;
+        queue.errorMessage = errorMessage;
+
         await DatabaseService.db.writeTxn(() async {
-          queue.status = success ? Status.success : Status.failed;
           await DatabaseService.db.syncQueues.put(queue);
         });
       } catch (e) {
         logger.e("Sync failed: $e");
+        queue.status = Status.failed;
+
         await DatabaseService.db.writeTxn(() async {
-          queue.status = Status.failed;
           await DatabaseService.db.syncQueues.put(queue);
         });
       }
@@ -66,10 +74,11 @@ class QueueService {
           .statusEqualTo(Status.success)
           .deleteAll();
     });
-
   }
 
-  Future<bool> postToServer(SyncQueue queue) async {
+  Future<(bool success, String? errorMessage)> postToServer(
+    SyncQueue queue,
+  ) async {
     final String? accessToken = await SharedPrefUtils().getAccessToken();
     final String body = queue.payload;
     final String link = queue.link;
@@ -80,20 +89,18 @@ class QueueService {
 
       final int statusCode = response[0] as int;
       if (statusCode != 201) {
-        queue.errorMessage = response[1];
-        await DatabaseService.db.writeTxn(() async {
-          await DatabaseService.db.syncQueues.put(queue);
-        });
-        return false;
+        return (false, response[1] as String?);
       }
-      return true;
+      return (true, null);
     } catch (e) {
       logger.e("Post failed: $e");
-      return false;
+      return (false, e.toString());
     }
   }
 
-  Future<bool> patchToServer(SyncQueue queue) async {
+  Future<(bool success, String? errorMessage)> patchToServer(
+    SyncQueue queue,
+  ) async {
     final String? accessToken = await SharedPrefUtils().getAccessToken();
     final String body = queue.payload;
     final String link = queue.link;
@@ -103,18 +110,13 @@ class QueueService {
       logger.d(response.toString());
 
       final int statusCode = response[0] as int;
-
       if (statusCode != 200) {
-        queue.errorMessage = response[1];
-        await DatabaseService.db.writeTxn(() async {
-          await DatabaseService.db.syncQueues.put(queue);
-        });
-        return false;
+        return (false, response[1] as String?);
       }
-      return true;
+      return (true, null);
     } catch (e) {
       logger.e("Patch failed: $e");
-      return false;
+      return (false, e.toString());
     }
   }
 

@@ -32,6 +32,7 @@ class _CreateBookViewState extends State<CreateBookView> {
       appBar: AppBar(title: const Text("Create Book")),
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Create Book'),
             SizedBox(height: 20),

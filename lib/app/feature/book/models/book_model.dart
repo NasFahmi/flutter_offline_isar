@@ -12,7 +12,6 @@ class BookLocalModel {
   // id local db isar
   Id id = Isar.autoIncrement;
 
-  @Index(unique: true)
   String? serverId; // UUID dari server
   String? title;
   String? author;
